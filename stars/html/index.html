@@ -1,10 +1,15 @@
-<html>
+<html ng-app="stars">
 <head>
     <script src="js/angular.js" type="text/javascript" ></script>
     <script src="js/raphael.js" type="text/javascript" ></script>
     <script src="js/stars.js" type="text/javascript" ></script>
 </head>
 <body>
-    <button onclick="drawCircle()">Kliknij</button>
+	<div ng-controller="StarsController">
+		Ilosc ramion: <input type="number" name="points" min="2" max="1000" ng-model="pointsCount" ng-change="refresh()"/>
+
+		{{pointsCount}}
+
+	</div>
 </body>
 
