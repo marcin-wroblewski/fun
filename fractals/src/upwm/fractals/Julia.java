@@ -1,7 +1,7 @@
 package upwm.fractals;
 
 public class Julia implements FractalSet {
-	public static int MAX_ITERATIONS = 75;
+	public int maxIterations = 75;
 	private Complex c = new Complex(-0.8, 0.156);
 	
 	public Julia() {
@@ -15,17 +15,27 @@ public class Julia implements FractalSet {
 
 	@Override
 	public int getMaxIterations() {
-		return MAX_ITERATIONS;
+		return maxIterations;
 	}
 	
 	@Override
 	public int check(Complex p) {
 		int i = 0;
 		Complex z = p;
-		while (z.modulusSqr() < 4 && i < MAX_ITERATIONS) {
+		while (z.modulusSqr() < 4 && i < maxIterations) {
 			z = z.sqr().add(c);
 			i++;
 		}
 		return i;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Julia(c=%s)", c);
+	}
+
+	@Override
+	public void setMaxIterations(int iterations) {
+		this.maxIterations = iterations;
 	}
 }

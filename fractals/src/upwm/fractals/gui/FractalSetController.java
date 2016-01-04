@@ -2,9 +2,6 @@ package upwm.fractals.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 import upwm.fractals.Complex;
 import upwm.fractals.FractalSet;
@@ -19,27 +16,44 @@ public class FractalSetController {
 
 	private FractalSet set;
 
-	private static final Color GRADIENT_FIRST = Color.WHITE;
-	private static final Color GRADIENT_LAST = Color.BLACK;
-
-	private Map<Integer, Color> colors = new HashMap<Integer, Color>();
+	private Color gradientStart = Color.WHITE;
+	private Color gradientEnd = Color.BLACK;
 
 	public FractalSetController(CanvasPane canvas, FractalSet set) {
 		super();
 		this.canvas = canvas;
 		this.set = set;
-
-		for (int i = 0; i <= set.getMaxIterations(); i++) {
-			Random r = new Random();
-			Color c = new Color(r.nextInt(256), r.nextInt(256), r.nextInt(256));
-			colors.put(i, c);
-		}
-
+	}
+	
+	public void setIterations(int iterations) {
+		this.set.setMaxIterations(iterations);
+		paintGraph();
+	}
+	
+	public void setGradientStart(Color gradientStart) {
+		this.gradientStart = gradientStart;
+		paintGraph();
+	}
+	
+	public void setGradientEnd(Color gradientEnd) {
+		this.gradientEnd = gradientEnd;
+		paintGraph();
+	}
+	
+	public void setSet(FractalSet set) {
+		this.set = set;
+		paintGraph();
+	}
+	
+	public void afterSetModified() {
+		paintGraph();
 	}
 
 	public void paintGraph() {
 		Dimension size = canvas.getSize();
 		canvas.clearPoints();
+		
+		
 		for (int x = 0; x < size.width; x++) {
 			for (int y = 0; y < size.height; y++) {
 				double re = xMin + (xMax - xMin) * x / size.width;
@@ -57,9 +71,9 @@ public class FractalSetController {
 		float degree = (float) level / set.getMaxIterations();
 		degree = (float) Math.sqrt(degree);
 
-		int r = (int) (degree * GRADIENT_FIRST.getRed() + (1 - degree) * GRADIENT_LAST.getRed());
-		int g = (int) (degree * GRADIENT_FIRST.getGreen() + (1 - degree) * GRADIENT_LAST.getGreen());
-		int b = (int) (degree * GRADIENT_FIRST.getBlue() + (1 - degree) * GRADIENT_LAST.getBlue());
+		int r = (int) (degree * gradientStart.getRed() + (1 - degree) * gradientEnd.getRed());
+		int g = (int) (degree * gradientStart.getGreen() + (1 - degree) * gradientEnd.getGreen());
+		int b = (int) (degree * gradientStart.getBlue() + (1 - degree) * gradientEnd.getBlue());
 
 		return new Color(r, g, b);
 	}

@@ -1,21 +1,31 @@
 package upwm.fractals;
 
 public class Mandelbrot implements FractalSet {
-	public static int MAX_ITERATIONS = 60;
+	private int maxIterations = 60;
 
 	@Override
 	public int getMaxIterations() {
-		return MAX_ITERATIONS;
+		return maxIterations;
 	}
-	
+
 	@Override
 	public int check(Complex p) {
 		int i = 0;
 		Complex z = Complex.ZERO;
-		while (z.modulusSqr() < 4 && i < MAX_ITERATIONS) {
+		while (z.modulusSqr() < 4 && i < maxIterations) {
 			z = z.sqr().add(p);
 			i++;
 		}
 		return i;
+	}
+
+	@Override
+	public String toString() {
+		return "Mandelbrot";
+	}
+
+	@Override
+	public void setMaxIterations(int iterations) {
+		this.maxIterations = iterations;
 	}
 }

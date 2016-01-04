@@ -1,15 +1,20 @@
 package upwm.fractals.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import upwm.fractals.FractalSet;
+import upwm.fractals.Julia;
 import upwm.fractals.Mandelbrot;
 
 @SuppressWarnings("serial")
@@ -19,12 +24,13 @@ public class FractalsFrame extends JFrame {
 	private JPanel contentPanel = new JPanel();
 	private JPanel buttonsPanel = new JPanel();
 
-	private JComboBox<String> chooseSet;
+	private JComboBox<FractalSet> chooseSet = new JComboBox<FractalSet>(
+			new FractalSet[] { new Mandelbrot(), new Julia() });
 
-	{
-		String[] options = { "Mandelbrot", "Julia" };
-		chooseSet = new JComboBox<String>(options);
-	}
+	private JColorChooser gradientStartChooser = new JColorChooser(Color.BLACK);
+	private JColorChooser gradientEndChooser = new JColorChooser(Color.WHITE);
+
+	private JSpinner spinner = new JSpinner(new SpinnerNumberModel(50, 1, 500, 1));
 
 	public FractalsFrame() {
 		initGUI();
@@ -35,6 +41,9 @@ public class FractalsFrame extends JFrame {
 		contentPanel.add(canvasPanel, BorderLayout.CENTER);
 		contentPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 		buttonsPanel.add(chooseSet);
+		buttonsPanel.add(spinner);
+		buttonsPanel.add(gradientStartChooser);
+		buttonsPanel.add(gradientEndChooser);
 		canvasPanel.setPreferredSize(new Dimension(1700, 900));
 		setContentPane(contentPanel);
 		pack();
@@ -53,6 +62,17 @@ public class FractalsFrame extends JFrame {
 				}
 			}
 		});
+
+		chooseSet.addActionListener(e -> {
+			int index = chooseSet.getSelectedIndex();
+			FractalSet s = chooseSet.getModel().getElementAt(index);
+			ctrlr.setSet(s);
+		});
+		spinner.addChangeListener(e -> ctrlr.setIterations(((Number) spinner.getValue()).intValue()));
+		gradientStartChooser.getSelectionModel()
+				.addChangeListener(e -> ctrlr.setGradientStart(gradientStartChooser.getColor()));
+		gradientEndChooser.getSelectionModel()
+				.addChangeListener(e -> ctrlr.setGradientEnd(gradientEndChooser.getColor()));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}

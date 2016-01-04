@@ -6,4 +6,6 @@ public interface FractalSet {
 
 	int check(Complex p);
 
+	void setMaxIterations(int iterations);
+
 }

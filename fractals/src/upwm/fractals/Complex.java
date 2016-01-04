@@ -35,4 +35,10 @@ public class Complex {
 		return this.re * this.re + this.im * this.im;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s+%si", re,im);
+	}
+	
+
 }
