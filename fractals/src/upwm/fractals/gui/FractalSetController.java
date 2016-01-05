@@ -59,6 +59,7 @@ public class FractalSetController {
 				double re = xMin + (xMax - xMin) * x / size.width;
 				double im = yMax - (yMax - yMin) * y / size.height;
 				Complex num = new Complex(re, im);
+//				int level = set.check(re, im);
 				int level = set.check(num);
 				Color c = getColor(level);
 				canvas.setPoint(x, y, c);

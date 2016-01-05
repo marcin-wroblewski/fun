@@ -1,5 +1,8 @@
 package upwm.fractals;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Julia implements FractalSet {
 	public int maxIterations = 75;
 	private Complex c = new Complex(-0.8, 0.156);
@@ -37,5 +40,22 @@ public class Julia implements FractalSet {
 	@Override
 	public void setMaxIterations(int iterations) {
 		this.maxIterations = iterations;
+	}
+
+	@Override
+	public boolean hasParams() {
+		return true;
+	}
+
+	@Override
+	public List<String> getAvailableParams() {
+		return Arrays.asList("c");
+	}
+
+	@Override
+	public void setParamValue(String name, Complex c) {
+		if(name.equals("c")) {
+			this.c = c;
+		}
 	}
 }
