@@ -30,8 +30,8 @@ class Life {
             }
         }
 
-        toKill.forEach(cell => this.setDead(cell));
-        toRevive.forEach(cell => this.setAlive(cell));
+        toKill.forEach(cell => this.kill(cell));
+        toRevive.forEach(cell => this.revive(cell));
     }
 
     maxX() {
@@ -68,25 +68,18 @@ class Life {
         }
     }
 
-    setAlive(cell) {
+    revive(cell) {
         if (!this.isAlive(cell)) {
             this.liveCells.push(cell);
         }
     }
 
-    setDead(cell) {
+    kill(cell) {
         const index = this.indexOf(cell);
         if (index > -1) {
             this.liveCells.splice(index, 1);
         }
     }
-
-
-
 }
 
-function sayHello() {
-    console.log('heja');
-}
-
-module.exports = { sayHello, Life };
+module.exports = { Life };
