@@ -38,7 +38,7 @@ class Voxels {
     addVoxel(i, j, k) {
         // i += this.voxelsPerRadius;
         // j += this.voxelsPerRadius;
-        k += this.voxelsPerRadius;
+        // k += this.voxelsPerRadius;
 
         var voxel = [i, j, k];
         var key = `${i},${j},${k}`;

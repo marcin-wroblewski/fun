@@ -3,8 +3,8 @@ const Voxels = require('./voxels').Voxels;
 const WHITE = "rgb(255,255,255)";
 const BLACK = "rgb(0, 0, 0)";
 const GRAY = "rgb(127,127,127)";
-const YELLOW = "rgb(255,255,0,0.5)";
-const BLUE = "rgb(0,0,255, 0.5)";
+const YELLOW = "rgb(255,255,0)";
+const BLUE = "rgb(0,0,255)";
 const GREEN = "rgb(0,255,0)";
 const RED = "rgb(255,0,0)";
 
@@ -14,7 +14,7 @@ class VoxelsController {
         this.view = view;
 
         this.radius = 10;
-        this.level = 1;
+        this.level = -this.radius;
     }
 
     initRadiusInput(id) {
@@ -32,27 +32,48 @@ class VoxelsController {
     initTestBtn(id) {
         const btn = document.getElementById(id);
         btn.onclick = (ev => {
-            this.view.paintBoxes(-1, 2, 0, GREEN);
-            this.view.paintBoxes(0, 2, 0, GREEN);
-            this.view.paintBoxes(0, 1, 0, GREEN);
+            // console.log(this.voxels.voxels);
 
-            this.view.paintEdges(-1, 2, 0, WHITE);
-            this.view.paintEdges(0, 2, 0, WHITE);
-            this.view.paintEdges(0, 1, 0, WHITE);
+            // this.view.paintBoxes(-1, 2, 0, GREEN);
+            // this.view.paintBoxes(0, 2, 0, GREEN);
+            // this.view.paintBoxes(0, 1, 0, GREEN);
+
+            // this.view.paintEdges(-1, 2, 0, WHITE);
+            // this.view.paintEdges(0, 2, 0, WHITE);
+            // this.view.paintEdges(0, 1, 0, WHITE);
         });
         return this;
     }
 
+    initClearBtn(id) {
+        const btn = document.getElementById(id);
+        btn.onclick = (ev => {
+            this.view.clear();
+        });
+        return this;
+    }
+
+    updateView() {
+        this.paintLevel(this.level - 1, YELLOW);
+        this.paintLevel(this.level, BLUE);
+
+        this.voxels.voxels.forEach(v => {
+            this.view.paintEdges(v[0], v[1], v[2], WHITE);
+        })
+
+    }
 
     changeRadius(radius) {
         this.radius = radius;
         this.voxels.setVoxelsPerRadius(radius);
-        this.paint();
+        this.view.clear();
+        this.updateView();
     }
 
     changeLevel(level) {
         this.level = level;
-        this.paint();
+        this.view.clearBoxes();
+        this.updateView();
     }
 
     initCanvas(id) {
@@ -81,15 +102,13 @@ class VoxelsController {
         this.paintLevel(this.level);
     }
 
-    paintLevel(level) {
-        if (level < 1) {
-            return;
-        }
+    paintLevel(level, color) {
 
         var voxels = this.voxels.voxelsForLevel(level - 1);
         for (var i = 0; i < voxels.length; i++) {
             var voxel = voxels[i];
-            this.context.fillRect(voxel[0] * this.pixelWidth, voxel[1] * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+            this.view.paintBoxes(voxel[0], voxel[1], voxel[2], color);
+            // this.context.fillRect(voxel[0] * this.pixelWidth, voxel[1] * this.pixelWidth, this.pixelWidth, this.pixelWidth);
         }
     }
 }
