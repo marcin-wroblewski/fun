@@ -14,7 +14,7 @@ class VoxelsController {
         this.view = view;
 
         this.radius = 10;
-        this.level = -this.radius;
+        this.level = -this.radius + 1;
     }
 
     initRadiusInput(id) {
@@ -32,6 +32,7 @@ class VoxelsController {
     initTestBtn(id) {
         const btn = document.getElementById(id);
         btn.onclick = (ev => {
+
             // console.log(this.voxels.voxels);
 
             // this.view.paintBoxes(-1, 2, 0, GREEN);
@@ -57,9 +58,11 @@ class VoxelsController {
         this.paintLevel(this.level - 1, YELLOW);
         this.paintLevel(this.level, BLUE);
 
-        this.voxels.voxels.forEach(v => {
-            this.view.paintEdges(v[0], v[1], v[2], WHITE);
-        })
+        this.view.paintMesh(this.voxels.voxels, WHITE);
+
+        // this.voxels.voxels.forEach(v => {
+        //     this.view.paintEdges(v[0], v[1], v[2], WHITE);
+        // })
 
     }
 
@@ -105,11 +108,12 @@ class VoxelsController {
     paintLevel(level, color) {
 
         var voxels = this.voxels.voxelsForLevel(level - 1);
-        for (var i = 0; i < voxels.length; i++) {
-            var voxel = voxels[i];
-            this.view.paintBoxes(voxel[0], voxel[1], voxel[2], color);
-            // this.context.fillRect(voxel[0] * this.pixelWidth, voxel[1] * this.pixelWidth, this.pixelWidth, this.pixelWidth);
-        }
+        this.view.paintBoxes(voxels, color);
+        // for (var i = 0; i < voxels.length; i++) {
+        //     var voxel = voxels[i];
+        //     this.view.paintBoxes(voxel[0], voxel[1], voxel[2], color);
+        //     // this.context.fillRect(voxel[0] * this.pixelWidth, voxel[1] * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+        // }
     }
 }
 
